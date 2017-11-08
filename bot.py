@@ -142,9 +142,7 @@ class Modmail(commands.Bot):
     def help_embed(self):
         em = discord.Embed(color=0x00FFFF)
         em.set_author(name='Mod Mail - Help', icon_url=self.user.avatar_url)
-        em.description = 'This bot is a python implementation of a stateless "Mod Mail" bot. ' \
-                         'Made by verixx and improved by the suggestions of others. This bot ' \
-                         'saves no data and utilises channel topics for storage and syncing.' 
+        em.description = 'This bot is a python implementation by **ManGo**'
                  
 
         cmds = '`m.setup [modrole] <- (optional)` - Command that sets up the bot.\n' \
@@ -157,7 +155,7 @@ class Modmail(commands.Bot):
                'Modifying the channel topic will also break the system.'
         em.add_field(name='Commands', value=cmds)
         em.add_field(name='Warning', value=warn)
-        em.add_field(name='Github', value='https://github.com/verixx/modmail')
+        em.add_field(name='Owner ManGo', value='ManGo#7532')
         em.set_footer(text='Star the repository to unlock hidden features!')
 
         return em
@@ -381,7 +379,7 @@ class Modmail(commands.Bot):
         '''Set a custom playing status for the bot.'''
         if message == 'clear':
             return await self.change_presence(game=None)
-        await self.change_presence(game=discord.Game(name=message), status=discord.Status.online)
+        await self.change_presence(game=discord.Game(name=message), status=discord.Status.dnd)
         await ctx.send(f"Changed status to **{message}**")
 
     @commands.command()
