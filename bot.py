@@ -87,6 +87,7 @@ class Modmail(commands.Bot):
         print('------------------------------------------')
         print('Restarting...')
         print('------------------------------------------')
+        await bot.change_presence(game=discord.Game(name="DmMeForHelp"))
         os.execv(sys.executable, ['python'] + sys.argv)
 
     @classmethod
