@@ -379,7 +379,7 @@ class Modmail(commands.Bot):
         '''Set a custom playing status for the bot.'''
         if message == 'clear':
             return await self.change_presence(game=None)
-        await self.change_presence(game=discord.Game(name=message), status=discord.Status.dnd)
+        await self.change_presence(game=discord.Game(name=message), status=discord.Status.idle)
         await ctx.send(f"Changed status to **{message}**")
 
     @commands.command()
