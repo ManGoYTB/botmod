@@ -28,6 +28,10 @@ import glob
 import os
 import aiohttp
 
+extensions = [
+    'cogs.subs',
+]
+
 class Modmail(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=self.get_pre)
