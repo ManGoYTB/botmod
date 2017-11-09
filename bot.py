@@ -386,7 +386,7 @@ class Modmail(commands.Bot):
             await ctx.send('User is already blocked.')
 
     @commands.command()
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(administrator=True)
     async def unblock(self, ctx, id=None):
         '''Unblocks a user from using modmail.'''
         if id is None:
