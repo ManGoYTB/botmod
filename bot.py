@@ -408,36 +408,29 @@ class Modmail(commands.Bot):
     
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def serverprefix(self, ctx, *prefixes):
-        """Sets Red's prefixes for this server
+    async def stream(self, ctx, streamer=None, *, stream_title=None):
+        """Sets Red's streaming status
 
-        Accepts multiple prefixes separated by a space. Enclose in double
-        quotes if a prefix contains spaces.
-        Example: set serverprefix ! $ ? "two words"
+        Leaving both streamer and stream_title empty will clear it."""
 
-        Issuing this command with no parameters will reset the server
-        prefixes and the global ones will be used instead."""
         server = ctx.message.server
 
-        if prefixes == ():
-            self.bot.settings.set_server_prefixes(server, [])
-            self.bot.settings.save_settings()
-            current_p = ", ".join(self.bot.settings.prefixes)
-            await self.bot.say("Server prefixes reset. Current prefixes: "
-                               "`{}`".format(current_p))
+        current_status = server.me.status if server is not None else None
+
+        if stream_title:
+            stream_title = stream_title.strip()
+            if "twitch.tv/" not in streamer:
+                streamer = "https://www.twitch.tv/" + streamer
+            game = discord.Game(type=1, url=streamer, name=stream_title)
+            await self.bot.change_presence(game=game, status=current_status)
+            log.debug('Owner has set streaming status and url to "{}" and {}'.format(stream_title, streamer))
+        elif streamer is not None:
+            await self.bot.send_cmd_help(ctx)
             return
-
-        prefixes = sorted(prefixes, reverse=True)
-        self.bot.settings.set_server_prefixes(server, prefixes)
-        self.bot.settings.save_settings()
-        log.debug("Setting server's {} prefixes to:\n\t{}"
-                  "".format(server.id, self.bot.settings.prefixes))
-
-        p = "Prefixes" if len(prefixes) > 1 else "Prefix"
-        await self.bot.say("{} set for this server.\n"
-                           "To go back to the global prefixes, do"
-                           " `{}set serverprefix` "
-                           "".format(p, prefixes[0]))
+        else:
+            await self.bot.change_presence(game=None, status=current_status)
+            log.debug('stream cleared by owner')
+        await self.bot.say("Done.")
                 
 if __name__ == '__main__':
     Modmail.init()
