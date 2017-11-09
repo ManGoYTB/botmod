@@ -424,7 +424,6 @@ class Modmail(commands.Bot):
         else:
             await ctx.send('User is not already blocked.')
         def __init__(self, bot: commands.Bot):
-        self.bot = bot
 
     def _member_has_role(self, member: discord.Member, role: discord.Role):
         return role in member.roles
