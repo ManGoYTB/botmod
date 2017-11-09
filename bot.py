@@ -416,29 +416,38 @@ class Modmail(commands.Bot):
     
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def stream(self, ctx, streamer=None, *, stream_title=None):
-        """Sets Red's streaming status
+    async def status(self, ctx, *, status=None):
+        """Sets Red's status
 
-        Leaving both streamer and stream_title empty will clear it."""
+        Statuses:
+            online
+            idle
+            dnd
+            invisible"""
+
+        statuses = {
+                    "online"    : discord.Status.online,
+                    "idle"      : discord.Status.idle,
+                    "dnd"       : discord.Status.dnd,
+                    "invisible" : discord.Status.invisible
+                   }
 
         server = ctx.message.server
 
-        current_status = server.me.status if server is not None else None
+        current_game = server.me.game if server is not None else None
 
-        if stream_title:
-            stream_title = stream_title.strip()
-            if "twitch.tv/" not in streamer:
-                streamer = "https://www.twitch.tv/" + streamer
-            game = discord.Game(type=1, url=streamer, name=stream_title)
-            await self.bot.change_presence(game=game, status=current_status)
-            log.debug('Owner has set streaming status and url to "{}" and {}'.format(stream_title, streamer))
-        elif streamer is not None:
-            await self.bot.send_cmd_help(ctx)
-            return
+        if status is None:
+            await self.bot.change_presence(status=discord.Status.online,
+                                           game=current_game)
+            await self.bot.say("Status reset.")
         else:
-            await self.bot.change_presence(game=None, status=current_status)
-            log.debug('stream cleared by owner')
-        await self.bot.say("Done.")
+            status = statuses.get(status.lower(), None)
+            if status:
+                await self.bot.change_presence(status=status,
+                                               game=current_game)
+                await self.bot.say("Status changed.")
+            else:
+                await self.bot.send_cmd_help(ctx)
                 
 if __name__ == '__main__':
     Modmail.init()
