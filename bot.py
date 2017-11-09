@@ -406,7 +406,8 @@ class Modmail(commands.Bot):
         else:
             await ctx.send('User is not already blocked.')
     
-    @checks.serverowner_or_permissions(administrator=True)
+    @commands.command()
+    @commands.has_permissions(administrator=True)
     async def serverprefix(self, ctx, *prefixes):
         """Sets Red's prefixes for this server
 
