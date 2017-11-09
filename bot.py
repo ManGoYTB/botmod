@@ -417,41 +417,6 @@ class Modmail(commands.Bot):
             await ctx.send('User successfully unblocked!')
         else:
             await ctx.send('User is not already blocked.')
-    
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def status(self, ctx, *, status=None):
-        """Sets Red's status
-
-        Statuses:
-            online
-            idle
-            dnd
-            invisible"""
-
-        statuses = {
-                    "online"    : discord.Status.online,
-                    "idle"      : discord.Status.idle,
-                    "dnd"       : discord.Status.dnd,
-                    "invisible" : discord.Status.invisible
-                   }
-
-        server = ctx.message.server
-
-        current_game = server.me.game if server is not None else None
-
-        if status is None:
-            await self.bot.change_presence(status=discord.Status.online,
-                                           game=current_game)
-            await self.bot.say("Status reset.")
-        else:
-            status = statuses.get(status.lower(), None)
-            if status:
-                await self.bot.change_presence(status=status,
-                                               game=current_game)
-                await self.bot.say("Status changed.")
-            else:
-                await self.bot.send_cmd_help(ctx)
                 
 if __name__ == '__main__':
     Modmail.init()
